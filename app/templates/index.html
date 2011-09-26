@@ -9,12 +9,28 @@
 			font-family: 'Loved by the King', cursive;
 			font-size: 60pt;
 			font-weight: bold;
+			margin-bottom: 0px;
+		}
+		#content {
+			width: 500px;
+			margin: 0 auto;
+		}
+		.info {
+			text-align: center;
+			font-family: "helvetica neue", sans-serif;
+			font-size: 12pt;
+		}
+		#status {
+			color: #26ADE4;
 		}
 	</style>
 </head>
 <body>
-    <h1 id="logo">Paste Here!</h1>
-    <div id="status"></div>
+	<div id="content">
+	    <h1 id="logo">Paste Images Here!</h1>
+		<div class="info">Upload an image by pasting it anywhere on this page (only works in Chrome).</div>
+	    <div id="status" class="info"></div>
+	</div>
 
     <script type="text/javascript">
 
@@ -25,7 +41,7 @@
 		
 			var blob = items[0].getAsFile();
 			if(blob)
-				$("#status").html("Loading...");
+				$("#status").html("Uploading...");
 			
 			var reader = new FileReader();
 			reader.onload = function(event){
