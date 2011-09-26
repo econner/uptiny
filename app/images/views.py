@@ -64,7 +64,7 @@ def index(request):
         s3uploader = S3ImageUpload()
         filename = s3uploader.upload_image(im_str)
         print filename
-        return HttpResponse("TEST")
+        return HttpResponse(filename)
     
     return render_to_response(
         "index.html",

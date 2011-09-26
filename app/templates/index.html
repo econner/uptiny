@@ -1,9 +1,21 @@
 <html>
 <head>
+	<title>Uptiny: Paste to Upload an Image</title>
 	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+	
+	<link href='http://fonts.googleapis.com/css?family=Loved+by+the+King' rel='stylesheet' type='text/css'>
+	<style type="text/css">
+		#logo {
+			font-family: 'Loved by the King', cursive;
+			font-size: 60pt;
+			font-weight: bold;
+		}
+	</style>
 </head>
 <body>
-    <div id="rte" contenteditable="true" style="height: 100%; width: 100%; outline: 0; overflow: auto"></div>
+    <h1 id="logo">Paste Here!</h1>
+    <div id="status"></div>
+
     <script type="text/javascript">
 
 		document.onpaste = function(event) {
@@ -12,7 +24,9 @@
 			console.log(JSON.stringify(items)); // will give you the mime types
 		
 			var blob = items[0].getAsFile();
-		
+			if(blob)
+				$("#status").html("Loading...");
+			
 			var reader = new FileReader();
 			reader.onload = function(event){
 				console.log(event.target.result);
@@ -22,74 +36,14 @@
 					url: "/",
 					enctype: "multipart/form-data",
 					data: { file: event.target.result },
-					success: function() {
-						console.log("UPLOADED!!");
+					success: function(filename) {
+						$("#status").html("http://media.uptiny.com/" + filename);
 					}
 				});
 			};
 			reader.readAsDataURL(blob);
 			console.info(reader);
 		}
-		//         document.getElementById("rte").focus();
-		//         document.body.addEventListener("paste", function(e) {
-		// 	console.info(e);
-		//             for (var i = 0; i < e.clipboardData.items.length; i++) {
-		// 		console.log("HERE!");
-		//                 if (e.clipboardData.items[i].kind == "file" && e.clipboardData.items[i].type == "image/png") {
-		//                     // get the blob
-		//                     //var imageFile = e.clipboardData.items[i].getAsFile();
-		// 			
-		//                     // read the blob as a data URL
-		//                     var fileReader = new FileReader();
-		//                     fileReader.onloadend = function(e) {
-		//                         // create an image
-		//                         var image = document.createElement("IMG");
-		//                         image.src = this.result;
-		// 
-		// 				$.ajax({
-		// 					type: "POST",
-		// 					url: "/",
-		// 					enctype: "multipart/form-data",
-		// 					data: { file: image.src },
-		// 					success: function() {
-		// 						console.log("UPLOADED!!");
-		// 					}
-		// 				});
-		// 
-		//                         // insert the image
-		//                         var range = window.getSelection().getRangeAt(0);
-		//                         range.insertNode(image);
-		//                         range.collapse(false);
-		// 
-		//                         // set the selection to after the image
-		//                         var selection = window.getSelection();
-		//                         selection.removeAllRanges();
-		//                         selection.addRange(range);
-		//                     };
-		// 
-		//                     // TODO: Error Handling!
-		//                     // fileReader.onerror = ...
-		// 
-		//                     //fileReader.readAsDataURL(imageFile);
-		// 
-		//                     // prevent the default paste action
-		//                     e.preventDefault();
-		// 
-		//                     // only paste 1 image at a time
-		//                     break;
-		//                 }
-		//             }
-		//         });
-		// 
-		//      	$(document).ready(function() {
-		// 	// set the upload target to the iframe
-		// 	$("#upload-form").attr("target", "upload-target");
-		// 	
-		// 	
-		// });
     </script>
-	<form id="upload-form" method="post" enctype="multipart/form-data" action="/">
-		<input type="hidden" name="file" />
-		<iframe id="upload-target" name="upload-target" src="/" style="width:0;height:0;border:0px solid #fff;"></iframe>
-	</form>
 </body>
+</html>
